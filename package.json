@@ -1,0 +1,25 @@
+{
+  "name": "scaler-covid-tracker",
+  "version": "1.0.0",
+  "description": "Covid Tracker for Scaler Academy",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joydeep-ib/scaler-covid-tracker.git"
+  },
+  "author": "joydeep@interviewbit.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joydeep-ib/scaler-covid-tracker/issues"
+  },
+  "homepage": "https://github.com/joydeep-ib/scaler-covid-tracker#readme",
+  "dependencies": {
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
+  }
+}
