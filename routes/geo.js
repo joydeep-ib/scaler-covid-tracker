@@ -25,6 +25,9 @@ function loadData() {
     }
 
     citiesData = JSON.parse(data);
+    // Bad
+    global.citiesData = citiesData;
+
     citiesList = Object.keys(citiesData);
   })
 }
@@ -87,3 +90,4 @@ router.get('/city', (req, res) => {
 })
 
 module.exports = router;
+module.exports.cityFinder = cityFinder;
