@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Report</title>
+  <%- include('../partials/head.ejs') %>
+
+  <link rel="stylesheet" href="/static/css/autocomplete.css">
+</head>
+<body>
+  <%- include('../partials/header.ejs') %>
+  <main>
+
+    <form action="/reports/new" method="POST">
+      <fieldset>
+        <legend>Report Covid 19 Case</legend>
+        <div class="form-group">
+          <label for="patientName">Patient Name</label>
+          <input type="pname" class="form-control" id="patientName" placeholder="Enter Patient Name" name="pname" required>
+          <small id="emailHelp" class="form-text text-muted">Patient names helps us track people better</small>
+        </div>
+        <div class="form-group">
+          <label for="patientAge">Patient Age</label>
+          <input type="age" class="form-control" id="patientAge" placeholder="Enter Patient Age" name="age" required>
+          <small class="form-text text-muted">Patient age helps us track people better</small>
+        </div>
+        <div class="form-group">
+          <label for="patientGender">Patient Gender</label>
+          <select class="form-control" id="patientGender" name="gender">
+            <option>Male</option>
+            <option>Female</option>
+            <option>Others</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="pstate">Patient State</label>
+
+          <div class="autocomplete">
+            <input id="pstate" type="text" class="form-control" name="pstate" placeholder="Patients State">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="district">Patient District</label>
+
+          <div class="autocomplete">
+            <input id="district" type="text" class="form-control" name="district" placeholder="Patients District">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="city">Patient City</label>
+
+          <div class="autocomplete">
+            <input id="city" type="text" class="form-control" name="city" placeholder="Patients City">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </fieldset>
+    </form>
+
+
+  </main>
+  <footer>
+    <%- include('../partials/footer.ejs') %>
+  </footer>
+
+  <script src="/static/js/autocomplete.js"></script>
+
+  <script>
+    let patientState = null;
+    let patientDistrict = null;
+    let patientCity = null;
+
+    autocomplete(document.getElementById("pstate"), function(value) {
+      patientState = null;
+      return new Promise((resolve, reject) => {
+        if (value.length < 2) {
+          resolve([])
+        }
+        else {
+          fetch(`/geo/state?stateName=${value}`)
+            .then((res) => res.json())
+            .then((data) => {
+              const states = data.map(state => state.name);
+
+              resolve(states);
+            });
+        }
+      });
+    }, function(value) {
+      console.log('User Selected ', value);
+      patientState = value;
+    });
+
+    autocomplete(document.getElementById("district"), function(value) {
+      patientDistrict = null;
+
+      return new Promise((resolve, reject) => {
+        if (!patientState) {
+          alert('Please Select State First');
+
+          resolve([])
+
+          return;
+        }
+        
+        if (value.length < 2) {
+          resolve([])
+        }
+        else {
+          fetch(`/geo/state/${patientState}/districts`)
+            .then((res) => res.json())
+            .then((data) => {
+              const districts = data.map(district => district.name);
+
+              resolve(districts);
+            });
+        }
+      });
+    }, function(value) {
+      console.log('User Selected ', value);
+      patientDistrict = value;
+    });
+
+
+    autocomplete(document.getElementById("city"), function(value) {
+      patientCity = null;
+
+      return new Promise((resolve, reject) => {
+        if (!patientDistrict) {
+          alert('Please Select District First');
+
+          resolve([])
+
+          return;
+        }
+        
+        if (value.length < 2) {
+          resolve([])
+        }
+        else {
+          fetch(`/geo/city?cityName=${value}`)
+            .then((res) => res.json())
+            .then((data) => {
+              const cities = data.map(city => city.city);
+
+              resolve(cities);
+            });
+        }
+      });
+    }, function(value) {
+      console.log('User Selected ', value);
+      patientCity = value;
+    });
+
+  </script>
+</body>
+</html>
