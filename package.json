@@ -19,7 +19,7 @@
   "homepage": "https://github.com/joydeep-ib/scaler-covid-tracker#readme",
   "dependencies": {
     "ejs": "^3.1.3",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "nodemon": "^2.0.4"
   }
 }
